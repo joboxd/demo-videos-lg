@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  postgres:
+    container_name: motum-videos-db
+    image: postgres:17
+    restart: always
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_DB: motum_videos
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+
+  app:
+    container_name: motum-videos
+    build: .
+    depends_on:
+      - postgres
+    ports:
+      - '8080:8080'
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/motum_videos
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+
+volumes:
+  pgdata: null

@@ -18,8 +18,7 @@ public class VideoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @Lob
-    @Column(columnDefinition = "BYTEA") // MySQL: LONGBLOB, en Postgres usar BYTEA
+    @Lob // MySQL: LONGBLOB, en Postgres usar BYTEA
     private byte[] data;
 
     private String contentType; // ej: "video/mp4"

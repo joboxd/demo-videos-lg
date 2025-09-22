@@ -27,7 +27,7 @@ public class VideoController {
         this.videoServiceMerged = videoServiceMerged;
     }
 
-    @PostMapping("/up´load")
+    @PostMapping("/upload")
     public VideoEntity upLoad(@RequestParam("file") MultipartFile file) throws IOException {
         return videoService.saveVideo(file);
     }
@@ -51,6 +51,6 @@ public class VideoController {
 
         File merged = videoServiceMerged.mergeVideos(v1, v2);
 
-        return videoServiceMerged.saveMergedVideo(merged);
+        return videoServiceMerged.saveMergedVideo(merged, name);
     }
 }
