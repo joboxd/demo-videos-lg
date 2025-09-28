@@ -1,22 +1,19 @@
 package com.videos.demo.entity;
 
-import jakarta.annotation.Generated;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "videos")
+@Table(name = "musics")
 @Getter
 @Setter
-public class VideoEntity {
+public class MusicEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,5 +21,5 @@ public class VideoEntity {
     @Lob // MySQL: LONGBLOB, en Postgres usar BYTEA
     private byte[] data;
 
-    private String contentType; // ej: "video/mp4"
+    private String contentType; // ej: "Music/mp3"
 }

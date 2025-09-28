@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.videos.demo.entity.MusicEntity;
 import com.videos.demo.entity.VideoEntity;
+import com.videos.demo.services.MusicService;
 import com.videos.demo.services.VideoService;
 import com.videos.demo.services.VideoServiceMerged;
 
@@ -21,15 +23,23 @@ import com.videos.demo.services.VideoServiceMerged;
 public class VideoController {
     private final VideoService videoService;
     private final VideoServiceMerged videoServiceMerged;
+    private final MusicService musicService;
 
-    public VideoController(VideoService videoService, VideoServiceMerged videoServiceMerged) {
+    public VideoController(VideoService videoService, VideoServiceMerged videoServiceMerged,
+            MusicService musicService) {
         this.videoService = videoService;
         this.videoServiceMerged = videoServiceMerged;
+        this.musicService = musicService;
     }
 
     @PostMapping("/upload")
     public VideoEntity upLoad(@RequestParam("file") MultipartFile file) throws IOException {
         return videoService.saveVideo(file);
+    }
+
+    @PostMapping("/uploadMusic")
+    public MusicEntity upLoadMusic(@RequestParam("file") MultipartFile file) throws IOException {
+        return musicService.saveVideo(file);
     }
 
     @GetMapping("/getVideoById/{id}")
@@ -44,12 +54,14 @@ public class VideoController {
     @PostMapping("/merge")
     public VideoEntity mergeVideos(@RequestParam Long videoId1,
             @RequestParam Long videoId2,
+            @RequestParam Long musicId,
             @RequestParam(defaultValue = "merged.mp4") String name) throws Exception {
 
         File v1 = videoService.saveVideoToTempFile(videoId1);
         File v2 = videoService.saveVideoToTempFile(videoId2);
+        File m = musicService.saveVideoToTempFile(musicId);
 
-        File merged = videoServiceMerged.mergeVideos(v1, v2);
+        File merged = videoServiceMerged.mergeVideos(v1, v2, m);
 
         return videoServiceMerged.saveMergedVideo(merged, name);
     }
